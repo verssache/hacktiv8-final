@@ -1,6 +1,9 @@
 package product
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 type CreateProductFormatter struct {
 	ID         int       `json:"id"`
@@ -67,7 +70,7 @@ type UpdateProductFormatter struct {
 	Products struct {
 		Id         int       `json:"id"`
 		Title      string    `json:"title"`
-		Price      int       `json:"price"`
+		Price      string    `json:"price"`
 		Stock      int       `json:"stock"`
 		CategoryId int       `json:"category_id"`
 		CreatedAt  time.Time `json:"created_at"`
@@ -75,12 +78,26 @@ type UpdateProductFormatter struct {
 	} `json:"products"`
 }
 
+func ToRupiah(price int) string {
+	var rupiah string
+	var num = []rune(strconv.Itoa(price))
+	qty := len(num)
+	for i := 0; i < qty; i++ {
+		if i%3 == 0 && i != 0 {
+			rupiah = string(num[qty-i-1]) + "." + rupiah
+		} else {
+			rupiah = string(num[qty-i-1]) + rupiah
+		}
+	}
+	return "Rp. " + rupiah
+}
+
 func FormatUpdateProduct(product Product) UpdateProductFormatter {
 	formatter := UpdateProductFormatter{
 		Products: struct {
 			Id         int       `json:"id"`
 			Title      string    `json:"title"`
-			Price      int       `json:"price"`
+			Price      string    `json:"price"`
 			Stock      int       `json:"stock"`
 			CategoryId int       `json:"category_id"`
 			CreatedAt  time.Time `json:"created_at"`
@@ -88,7 +105,7 @@ func FormatUpdateProduct(product Product) UpdateProductFormatter {
 		}{
 			Id:         product.ID,
 			Title:      product.Title,
-			Price:      product.Price,
+			Price:      ToRupiah(product.Price),
 			Stock:      product.Stock,
 			CategoryId: product.CategoryID,
 			CreatedAt:  product.CreatedAt,

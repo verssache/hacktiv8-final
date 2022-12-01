@@ -38,7 +38,7 @@ func (r *repository) FindAll() ([]TransactionHistory, error) {
 
 func (r *repository) FindByID(id int) (TransactionHistory, error) {
 	var transactionHistory TransactionHistory
-	err := r.db.Preload("User").Preload("Product").Where("ID = ?", id).Find(&transactionHistory).Error
+	err := r.db.Preload("User").Preload("Product").Where("ID = ?", id).First(&transactionHistory).Error
 	if err != nil {
 		return transactionHistory, err
 	}

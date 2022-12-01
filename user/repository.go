@@ -20,7 +20,7 @@ func NewRepository(db *gorm.DB) *repository {
 
 func (r *repository) FindByID(id int) (User, error) {
 	var user User
-	err := r.db.Where("ID = ?", id).Find(&user).Error
+	err := r.db.Where("ID = ?", id).First(&user).Error
 	if err != nil {
 		return user, err
 	}

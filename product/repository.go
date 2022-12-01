@@ -29,7 +29,7 @@ func (r *repository) FindAll(product *[]Product) error {
 
 func (r *repository) FindByID(id int) (Product, error) {
 	var product Product
-	err := r.db.Where("ID = ?", id).Find(&product).Error
+	err := r.db.Where("ID = ?", id).First(&product).Error
 	if err != nil {
 		return product, err
 	}
